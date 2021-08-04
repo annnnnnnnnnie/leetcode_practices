@@ -19,6 +19,7 @@ def triangle_number(nums):
 # e.g. [[1,2,3],[1,2,4],[1,3,4],[2,3,4]]
 def list_choose_r(ls, r):
     assert r > 0
+
     # choose r elements from the list
     if len(ls) < r:
         return []
@@ -48,6 +49,8 @@ def list_choose_r_fast(ls, r):
 # ls[start:] choose r
 # result stored in table[start][r-1]
 def list_choose_r_dp(ls, r, start, table):
+    assert r > 0
+
     # choose r elements from the list
     n = len(ls) - start
     if n < r:
@@ -70,7 +73,7 @@ def list_choose_r_dp(ls, r, start, table):
                 rest_choose = list_choose_r_dp(ls, (r - 1), new_start, table)
                 table[new_start][r - 2] = rest_choose
             for_this_x = [([x] + rc) for rc in rest_choose if rc]
-            result += for_this_x
+            result.extend(for_this_x)
 
     table[start][r - 1] = result
     return result

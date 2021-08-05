@@ -81,6 +81,47 @@ def triangle_number_binary(nums):
     return count
 
 
+def compressed(iterable):
+    result = dict()
+    for e in iterable:
+        result[e] = result.setdefault(e, 0) + 1
+    return result
+
+
+def triangle_number_binary_compress(nums):
+    compressed_nums = compressed(dropwhile((lambda x: x <= 0), sorted(nums)))
+    sorted_nums = sorted(compressed_nums.keys())
+
+    n = len(sorted_nums)
+
+    dict_total = sum(compressed_nums.values())
+    original_total_no_zero = len(list(dropwhile((lambda x: x <= 0), sorted(nums))))
+    assert dict_total == original_total_no_zero
+
+    if n < 3:
+        return triangle_number_binary(nums)
+
+    count = 0
+    for i in range(n - 2):
+        for j in range(i + 1, n - 1):
+
+            max_length_exclusive = sorted_nums[i] + sorted_nums[j]
+
+            if sorted_nums[j + 1] >= max_length_exclusive:
+                # This means that this pair of i j ? will never work
+                continue
+            else:
+                # use binary search to find the max index (inclusive) that makes a triangle
+                index = binary_search(sorted_nums, max_length_exclusive, j + 1, n)
+
+                # increment count
+                for k in range(j + 1, index + 1):
+                    count += compressed_nums[sorted_nums[k]] * compressed_nums[sorted_nums[i]] * compressed_nums[
+                        sorted_nums[j]]
+
+    return count
+
+
 # returns the index i such that
 # start <= i < end
 # sorted_nums[i] < max_length_exclusive

@@ -232,3 +232,19 @@ class TestBinaryMethod(unittest.TestCase):
         result = TestBinaryMethod.test_subject(nums)
         answer = 1
         self.assertEqual(answer, result)
+
+    def test_case_9(self):
+        nums = long_nums_3
+        result = TestBinaryMethod.test_subject(nums)
+        answer = 80688225
+        self.assertEqual(answer, result)
+
+
+class TestBinaryCompressMethod(unittest.TestCase):
+    test_subject = aug4_2021.triangle_number_binary_compress
+
+    def test_case_1(self):
+        nums = long_nums_3
+        result = TestBinaryCompressMethod.test_subject(nums)
+        answer = 80688225
+        self.assertEqual(answer, result)

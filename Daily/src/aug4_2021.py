@@ -1,4 +1,5 @@
 import copy
+import math
 from itertools import dropwhile
 from typing import List
 
@@ -98,10 +99,41 @@ def triangle_number_binary_compress(nums):
     original_total_no_zero = len(list(dropwhile((lambda x: x <= 0), sorted(nums))))
     assert dict_total == original_total_no_zero
 
-    if n < 3:
+    compression_rate = n / len(nums)
+
+    if n < 3 or compression_rate < 0.5:
         return triangle_number_binary(nums)
 
     count = 0
+
+    # count the case of x x x
+    for i in range(n):
+        count += math.comb(compressed_nums[sorted_nums[i]], 3)  # nCr will return 0 if n < r
+
+    # count the cases of x x y (y cannot be x)
+    for i in range(n):
+        x = sorted_nums[i]
+        n_xx = compressed_nums[x]
+
+        if n_xx < 2:
+            continue
+
+        # find the max y
+        max_length_exclusive = x + x
+
+        xx_choice_count = math.comb(n_xx, 2)
+
+        if i == n - 1 or sorted_nums[i + 1] >= max_length_exclusive:
+            # This means that this pair of i j ? will never work
+            y_choice_count = sum([compressed_nums[sorted_nums[j]] for j in range(0, i)])
+
+        else:
+            index = binary_search(sorted_nums, max_length_exclusive, i + 1, n)
+            y_choice_count = sum([compressed_nums[sorted_nums[j]] for j in range(0, index + 1) if j != i])
+
+        count += xx_choice_count * y_choice_count
+
+    # count the case that three different edges (x y z) are used
     for i in range(n - 2):
         for j in range(i + 1, n - 1):
 
@@ -116,9 +148,11 @@ def triangle_number_binary_compress(nums):
 
                 # increment count
                 for k in range(j + 1, index + 1):
-                    count += compressed_nums[sorted_nums[k]] * compressed_nums[sorted_nums[i]] * compressed_nums[
-                        sorted_nums[j]]
+                    n_edge_1 = compressed_nums[sorted_nums[i]]
+                    n_edge_2 = compressed_nums[sorted_nums[j]]
+                    n_edge_3 = compressed_nums[sorted_nums[k]]
 
+                    count += n_edge_1 * n_edge_2 * n_edge_3
     return count
 
 
@@ -158,7 +192,7 @@ def triangle_number_loop(nums):
 
 class Solution:
     def triangleNumber(self, nums: List[int]) -> int:
-        return triangle_number_binary(nums)
+        return triangle_number_binary_compress(nums)
 
 
 # returns list of r-list-tuples

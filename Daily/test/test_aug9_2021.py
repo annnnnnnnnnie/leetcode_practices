@@ -214,3 +214,21 @@ class TestBinaryMethod(unittest.TestCase):
         result = TestBinaryMethod.test_subject(nums)
         answer = 1
         self.assertEqual(answer, result)
+
+    def test_case_6(self):
+        nums = long_nums
+        result = TestBinaryMethod.test_subject(nums)
+        answer = 87446
+        self.assertEqual(answer, result)
+
+    def test_case_7(self):
+        nums = long_nums_2
+        result = TestBinaryMethod.test_subject(nums)
+        answer = 98993
+        self.assertEqual(answer, result)
+
+    def test_case_8(self):
+        nums = [0, 1, 1, 1]
+        result = TestBinaryMethod.test_subject(nums)
+        answer = 1
+        self.assertEqual(answer, result)

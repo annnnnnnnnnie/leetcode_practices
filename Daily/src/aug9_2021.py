@@ -1,4 +1,5 @@
 import copy
+from itertools import dropwhile
 from typing import List
 
 
@@ -55,16 +56,18 @@ def list_choose_r_dp(ls, r, start, table):
 
 
 def triangle_number_binary(nums):
-    n = len(nums)
-    sorted_nums = sorted(nums)
+    sorted_nums = list(dropwhile((lambda x: x <= 0), sorted(nums)))
+
+    n = len(sorted_nums)
     count = 0
     for i in range(n - 2):
         for j in range(i + 1, n - 1):
-            max_length_exclusive = nums[i] + nums[j]
+
+            max_length_exclusive = sorted_nums[i] + sorted_nums[j]
 
             if sorted_nums[j + 1] >= max_length_exclusive:
                 # This means that this pair of i j ? will never work
-                pass
+                continue
             else:
                 # use binary search to find the index that makes a triangle
                 index = binary_search(sorted_nums, max_length_exclusive, j + 1, n)

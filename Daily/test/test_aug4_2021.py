@@ -1,6 +1,6 @@
 import math
 import unittest
-from Daily.src import aug9_2021
+from Daily.src import aug4_2021
 
 long_nums = [66, 38, 74, 79, 52, 14, 17, 44, 57, 82, 43, 92, 53, 73, 30, 29, 48, 32, 0, 52, 36, 36, 92, 59, 38, 67,
              40, 68,
@@ -57,7 +57,7 @@ long_nums_3 = [15, 44, 16, 43, 47, 47, 45, 27, 46, 2, 28, 12, 49, 22, 36, 12, 6,
 class TestListChoose(unittest.TestCase):
     def test_1C1(self):
         nums = [1]
-        result = aug9_2021.list_choose_r(nums, 1)
+        result = aug4_2021.list_choose_r(nums, 1)
         answer = [[1]]
         self.assertListEqual(answer, result)
 
@@ -65,28 +65,28 @@ class TestListChoose(unittest.TestCase):
         n = 2
         r = 1
         nums = [i for i in range(n)]
-        result = aug9_2021.list_choose_r(nums, r)
+        result = aug4_2021.list_choose_r(nums, r)
         self.assertEqual(math.comb(len(nums), r), len(result))
 
     def test_3C2(self):
         n = 3
         r = 2
         nums = [i for i in range(n)]
-        result = aug9_2021.list_choose_r(nums, r)
+        result = aug4_2021.list_choose_r(nums, r)
         self.assertEqual(math.comb(len(nums), r), len(result))
 
     def test_4C3(self):
         n = 4
         r = 3
         nums = [i for i in range(n)]
-        result = aug9_2021.list_choose_r(nums, r)
+        result = aug4_2021.list_choose_r(nums, r)
         self.assertEqual(math.comb(len(nums), r), len(result))
 
     def test_10C3(self):
         n = 10
         r = 3
         nums = [i for i in range(n)]
-        result = aug9_2021.list_choose_r(nums, r)
+        result = aug4_2021.list_choose_r(nums, r)
         self.assertEqual(math.comb(len(nums), r), len(result))
 
 
@@ -95,49 +95,49 @@ class TestListChooseDP(unittest.TestCase):
         n = 4
         r = 3
         nums = [i for i in range(n)]
-        result = aug9_2021.list_choose_r_fast(nums, r)
+        result = aug4_2021.list_choose_r_fast(nums, r)
         self.assertEqual(math.comb(len(nums), r), len(result))
 
     def test_a_lot_C_3(self):
         nums = long_nums
         r = 3
-        result = aug9_2021.list_choose_r_fast(nums, r)
+        result = aug4_2021.list_choose_r_fast(nums, r)
         self.assertEqual(math.comb(len(nums), r), len(result))
 
     def test_a_lot_C_3_case2(self):
         nums = long_nums_2
         r = 3
-        result = aug9_2021.list_choose_r_fast(nums, r)
+        result = aug4_2021.list_choose_r_fast(nums, r)
         self.assertEqual(len(result), math.comb(len(nums), r))
 
 
 class TestIsTriangle(unittest.TestCase):
     def test_can_distinguish_bad_triangle(self):
-        self.assertFalse(aug9_2021.is_triangle([1, 2, 3]))
+        self.assertFalse(aug4_2021.is_triangle([1, 2, 3]))
 
     def test_can_distinguish_bad_triangle_case2(self):
-        self.assertFalse(aug9_2021.is_triangle([1, 1, 3]))
+        self.assertFalse(aug4_2021.is_triangle([1, 1, 3]))
 
     def test_can_pass_good_triangle(self):
-        self.assertTrue(aug9_2021.is_triangle([1, 3, 3]))
+        self.assertTrue(aug4_2021.is_triangle([1, 3, 3]))
 
 
 class TestCombMethod(unittest.TestCase):
     def test_case_1(self):
         nums = [2, 2, 3, 4]
-        result = aug9_2021.triangle_number_comb(nums)
+        result = aug4_2021.triangle_number_comb(nums)
         answer = 3
         self.assertEqual(answer, result)
 
     def test_case_2(self):
         nums = long_nums
-        result = aug9_2021.triangle_number_comb(nums)
+        result = aug4_2021.triangle_number_comb(nums)
         answer = 87446
         self.assertEqual(answer, result)
 
     def test_case_3(self):
         nums = long_nums_2
-        result = aug9_2021.triangle_number_comb(nums)
+        result = aug4_2021.triangle_number_comb(nums)
         answer = 98993
         self.assertEqual(answer, result)
 
@@ -145,19 +145,19 @@ class TestCombMethod(unittest.TestCase):
 class TestForLoopMethod(unittest.TestCase):
     def test_case_1(self):
         nums = [2, 2, 3, 4]
-        result = aug9_2021.triangle_number_loop(nums)
+        result = aug4_2021.triangle_number_loop(nums)
         answer = 3
         self.assertEqual(answer, result)
 
     def test_case_2(self):
         nums = long_nums
-        result = aug9_2021.triangle_number_loop(nums)
+        result = aug4_2021.triangle_number_loop(nums)
         answer = 87446
         self.assertEqual(answer, result)
 
     def test_case_3(self):
         nums = long_nums_2
-        result = aug9_2021.triangle_number_loop(nums)
+        result = aug4_2021.triangle_number_loop(nums)
         answer = 98993
         self.assertEqual(answer, result)
 
@@ -168,7 +168,7 @@ class TestBinarySearch(unittest.TestCase):
         max_length_exclusive = 3
         start = 0
         end = len(sorted_nums)
-        result = aug9_2021.binary_search(sorted_nums, max_length_exclusive, start, end)
+        result = aug4_2021.binary_search(sorted_nums, max_length_exclusive, start, end)
         answer = 1
         self.assertEqual(answer, result)
 
@@ -177,13 +177,13 @@ class TestBinarySearch(unittest.TestCase):
         max_length_exclusive = 6
         start = 2
         end = len(sorted_nums)
-        result = aug9_2021.binary_search(sorted_nums, max_length_exclusive, start, end)
+        result = aug4_2021.binary_search(sorted_nums, max_length_exclusive, start, end)
         answer = 4
         self.assertEqual(answer, result)
 
 
 class TestBinaryMethod(unittest.TestCase):
-    test_subject = aug9_2021.triangle_number_binary
+    test_subject = aug4_2021.triangle_number_binary
 
     def test_case_1(self):
         nums = [2, 2, 3, 4]

@@ -8,7 +8,7 @@ def is_triangle(combination):
     return x + y > z and x > 0 and y > 0 and z > 0
 
 
-def triangle_number(nums):
+def triangle_number_comb(nums):
     if len(nums) < 3:
         return 0
     count = len([combination for combination in list_choose_r_fast(nums, 3) if is_triangle(combination)])
@@ -21,7 +21,7 @@ def list_choose_r_fast(ls, r):
 
 
 # with a look-up table to cache the result
-# ls[start:] choose r
+# returns the choices of ls[start:] choose r
 # result stored in table[start][r-1]
 def list_choose_r_dp(ls, r, start, table):
     assert r > 0
@@ -54,9 +54,67 @@ def list_choose_r_dp(ls, r, start, table):
     return result
 
 
+def triangle_number_binary(nums):
+    n = len(nums)
+    sorted_nums = sorted(nums)
+    count = 0
+    for i in range(n - 2):
+        for j in range(i + 1, n - 1):
+            max_length_exclusive = nums[i] + nums[j]
+
+            if sorted_nums[j + 1] >= max_length_exclusive:
+                # This means that this pair of i j ? will never work
+                pass
+            else:
+                # use binary search to find the index that makes a triangle
+                index = binary_search(sorted_nums, max_length_exclusive, j + 1, n)
+
+                # shift the index to the right to account for duplicates
+                while index + 1 < n and sorted_nums[index] == sorted_nums[index + 1]:
+                    index += 1
+
+                count += index - j
+
+    return count
+
+
+# returns the index i such that
+# start <= i < end
+# sorted_nums[i] < max_length_exclusive
+def binary_search(sorted_nums, max_length_exclusive, start, end):
+    if end - start == 1:
+        return start
+    else:
+        middle = (start + end) // 2
+        if sorted_nums[middle] < max_length_exclusive:
+            return binary_search(sorted_nums, max_length_exclusive, middle, end)
+        else:
+            return binary_search(sorted_nums, max_length_exclusive, start, middle)
+
+
+def triangle_number_loop(nums):
+    if len(nums) < 10:
+        return triangle_number_comb(nums)
+
+    count = 0
+    n = len(nums)
+    sorted_nums = sorted(nums)
+    for i in range(n - 2):
+        for j in range(i + 1, n - 1):
+            for k in range(j + 1, n):
+                edge_1 = sorted_nums[i]
+                edge_2 = sorted_nums[j]
+                edge_3 = sorted_nums[k]
+                if is_triangle([edge_1, edge_2, edge_3]):
+                    count += 1
+                else:
+                    break
+    return count
+
+
 class Solution:
     def triangleNumber(self, nums: List[int]) -> int:
-        return triangle_number(nums)
+        return triangle_number_binary(nums)
 
 
 # returns list of r-list-tuples

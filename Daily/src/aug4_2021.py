@@ -1,5 +1,6 @@
 import copy
 import math
+import random
 from itertools import dropwhile
 from typing import List
 
@@ -18,7 +19,7 @@ def triangle_number_comb(nums):
 
 
 def list_choose_r_fast(ls, r):
-    table = [[[] for i in range(r)] for j in range(len(ls))]
+    table = [[[] for _ in range(r)] for _ in range(len(ls))]
     return list_choose_r_dp(ls, r, 0, table)
 
 
@@ -89,20 +90,21 @@ def compressed(iterable):
     return result
 
 
+def compression_rate(nums):
+    sample = random.sample(nums, len(nums) // 10)
+    compressed_sample = compressed(dropwhile((lambda x: x <= 0), sorted(sample)))
+    return 1 - len(list(compressed_sample.keys())) / len(sample)
+
+
 def triangle_number_binary_compress(nums):
-    compressed_nums = compressed(dropwhile((lambda x: x <= 0), sorted(nums)))
+    compressed_nums = compressed(dropwhile((lambda number: number <= 0), sorted(nums)))
     sorted_nums = sorted(compressed_nums.keys())
 
     n = len(sorted_nums)
 
     dict_total = sum(compressed_nums.values())
-    original_total_no_zero = len(list(dropwhile((lambda x: x <= 0), sorted(nums))))
+    original_total_no_zero = len(list(dropwhile((lambda number: number <= 0), sorted(nums))))
     assert dict_total == original_total_no_zero
-
-    compression_rate = n / len(nums)
-
-    if n < 3 or compression_rate < 0.5:
-        return triangle_number_binary(nums)
 
     count = 0
 
@@ -190,9 +192,16 @@ def triangle_number_loop(nums):
     return count
 
 
+def triangle_number(nums):
+    if len(nums) < 100 or compression_rate(nums) < 0.2:
+        return triangle_number_binary(nums)
+    else:
+        return triangle_number_binary_compress(nums)
+
+
 class Solution:
     def triangleNumber(self, nums: List[int]) -> int:
-        return triangle_number_binary_compress(nums)
+        return triangle_number(nums)
 
 
 # returns list of r-list-tuples

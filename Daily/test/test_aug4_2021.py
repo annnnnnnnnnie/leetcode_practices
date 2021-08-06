@@ -2,13 +2,13 @@ import math
 import unittest
 from Daily.src import aug4_2021
 
-long_nums = [66, 38, 74, 79, 52, 14, 17, 44, 57, 82, 43, 92, 53, 73, 30, 29, 48, 32, 0, 52, 36, 36, 92, 59, 38, 67,
-             40, 68,
-             54, 63, 26, 78, 67, 17, 43, 30, 18, 5, 81, 45, 66, 81, 82, 57, 88, 3, 12, 68, 43, 38, 91, 13, 48, 14,
-             85, 22,
-             33, 66, 7, 65, 74, 13, 62, 17, 69, 31, 1, 51, 22, 53, 75, 45, 70, 50, 65, 38, 56, 26, 60, 21, 24, 32,
-             12, 0, 7,
-             77, 67, 100, 85, 49, 83, 79, 76, 79, 76, 97, 44, 79, 4, 27]
+long_nums_1 = [66, 38, 74, 79, 52, 14, 17, 44, 57, 82, 43, 92, 53, 73, 30, 29, 48, 32, 0, 52, 36, 36, 92, 59, 38, 67,
+               40, 68,
+               54, 63, 26, 78, 67, 17, 43, 30, 18, 5, 81, 45, 66, 81, 82, 57, 88, 3, 12, 68, 43, 38, 91, 13, 48, 14,
+               85, 22,
+               33, 66, 7, 65, 74, 13, 62, 17, 69, 31, 1, 51, 22, 53, 75, 45, 70, 50, 65, 38, 56, 26, 60, 21, 24, 32,
+               12, 0, 7,
+               77, 67, 100, 85, 49, 83, 79, 76, 79, 76, 97, 44, 79, 4, 27]
 
 long_nums_2 = [23, 28, 1, 94, 30, 70, 93, 57, 81, 13, 26, 92, 80, 60, 98, 13, 69, 77, 45, 7, 85, 66, 82, 19, 58, 75, 28,
                16, 85, 66, 55, 61, 92, 42, 77, 88, 60, 90, 14, 43, 75, 80, 70, 65, 77, 97, 18, 40, 75, 46, 81, 49, 51,
@@ -147,7 +147,7 @@ class TestListChooseDP(unittest.TestCase):
         self.assertEqual(math.comb(len(nums), r), len(result))
 
     def test_a_lot_C_3(self):
-        nums = long_nums
+        nums = long_nums_1
         r = 3
         result = aug4_2021.list_choose_r_fast(nums, r)
         self.assertEqual(math.comb(len(nums), r), len(result))
@@ -178,7 +178,7 @@ class TestCombMethod(unittest.TestCase):
         self.assertEqual(answer, result)
 
     def test_case_2(self):
-        nums = long_nums
+        nums = long_nums_1
         result = aug4_2021.triangle_number_comb(nums)
         answer = 87446
         self.assertEqual(answer, result)
@@ -198,7 +198,7 @@ class TestForLoopMethod(unittest.TestCase):
         self.assertEqual(answer, result)
 
     def test_case_2(self):
-        nums = long_nums
+        nums = long_nums_1
         result = aug4_2021.triangle_number_loop(nums)
         answer = 87446
         self.assertEqual(answer, result)
@@ -263,13 +263,13 @@ class TestBinaryMethod(unittest.TestCase):
         answer = 1
         self.assertEqual(answer, result)
 
-    def test_case_6(self):
-        nums = long_nums
+    def test_long_nums_1(self):
+        nums = long_nums_1
         result = TestBinaryMethod.test_subject(nums)
         answer = 87446
         self.assertEqual(answer, result)
 
-    def test_case_7(self):
+    def test_long_nums_2(self):
         nums = long_nums_2
         result = TestBinaryMethod.test_subject(nums)
         answer = 98993
@@ -281,10 +281,16 @@ class TestBinaryMethod(unittest.TestCase):
         answer = 1
         self.assertEqual(answer, result)
 
-    def test_case_9(self):
+    def test_long_nums_3(self):
         nums = long_nums_3
         result = TestBinaryMethod.test_subject(nums)
         answer = 80688225
+        self.assertEqual(answer, result)
+
+    def test_long_nums_4(self):
+        nums = long_nums_4
+        result = TestBinaryMethod.test_subject(nums)
+        answer = 79579325
         self.assertEqual(answer, result)
 
 
@@ -321,7 +327,7 @@ class TestBinaryCompressMethod(unittest.TestCase):
         answer = 1
         self.assertEqual(answer, result)
 
-    def test_case_6(self):
+    def test_long_nums_2(self):
         nums = long_nums_2
         result = TestBinaryCompressMethod.test_subject(nums)
         answer = 98993
@@ -333,8 +339,72 @@ class TestBinaryCompressMethod(unittest.TestCase):
         answer = 4
         self.assertEqual(answer, result)
 
-    def test_case_8(self):
+    def test_long_nums_3(self):
         nums = long_nums_3
         result = TestBinaryCompressMethod.test_subject(nums)
         answer = 80688225
+        self.assertEqual(answer, result)
+
+    def test_long_nums_4(self):
+        nums = long_nums_4
+        result = TestBinaryCompressMethod.test_subject(nums)
+        print(result)
+        answer = 79579325
+        self.assertEqual(answer, result)
+
+
+class TestOverall(unittest.TestCase):
+    def test_case_1(self):
+        nums = [2, 2, 3, 4]
+        result = aug4_2021.triangle_number(nums)
+        answer = 3
+        self.assertEqual(answer, result)
+
+    def test_case_2(self):
+        nums = [2] * 10
+        result = aug4_2021.triangle_number(nums)
+        answer = math.comb(len(nums), 3)
+        self.assertEqual(answer, result)
+
+    def test_case_3(self):
+        nums = [2] * 100 + [3] * 100
+        result = aug4_2021.triangle_number(nums)
+        answer = math.comb(len(nums), 3)
+        self.assertEqual(answer, result)
+
+    def test_case_4(self):
+        nums = [1, 1, 5]
+        result = aug4_2021.triangle_number(nums)
+        answer = 0
+        self.assertEqual(answer, result)
+
+    def test_case_5(self):
+        nums = [1, 2, 2, 5]
+        result = aug4_2021.triangle_number(nums)
+        answer = 1
+        self.assertEqual(answer, result)
+
+    def test_long_nums_2(self):
+        nums = long_nums_2
+        result = aug4_2021.triangle_number(nums)
+        answer = 98993
+        self.assertEqual(answer, result)
+
+    def test_case_7(self):
+        nums = [4, 2, 3, 4]
+        result = aug4_2021.triangle_number(nums)
+        answer = 4
+        self.assertEqual(answer, result)
+
+    def test_long_nums_3(self):
+        nums = long_nums_3
+        result = aug4_2021.triangle_number(nums)
+        answer = 80688225
+        self.assertEqual(answer, result)
+
+    def test_long_nums_4(self):
+        nums = long_nums_4
+        result = aug4_2021.triangle_number(nums)
+        print(result)
+        answer = 79579325
         self.assertEqual(answer, result)

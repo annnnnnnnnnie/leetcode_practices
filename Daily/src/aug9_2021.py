@@ -18,7 +18,7 @@ def generate_super_ugly_sequence(n, sorted_primes):
         current_result_position += 1
 
         # Find which one to be appended (the smallest one)
-        smallest_comb_index = 0
+        smallest_comb_indices = []
         smallest_comb_product = math.inf
         for i in range(current_result_position):
             (current_comb_choice, current_comb_product) = current_comb_table[i]
@@ -26,22 +26,27 @@ def generate_super_ugly_sequence(n, sorted_primes):
             if current_comb_choice == len(sorted_primes):
                 continue
 
-            if current_comb_product < smallest_comb_product:
+            if current_comb_product <= smallest_comb_product:
+                if current_comb_product < smallest_comb_product:
+                    smallest_comb_indices = [i]
+                else:
+                    smallest_comb_indices.append(i)
                 smallest_comb_product = current_comb_product
-                smallest_comb_index = i
 
-        (sorted_prime_index, smallest_comb_product) = current_comb_table[smallest_comb_index]
         # Update the result
-        assert smallest_comb_product == sorted_primes[sorted_prime_index] * result[smallest_comb_index]
         result[current_result_position] = smallest_comb_product
 
         # Update the current_comb_table
-        # The used one
-        if sorted_prime_index + 1 < len(sorted_primes):
-            new_product = result[smallest_comb_index] * sorted_primes[sorted_prime_index + 1]
-            current_comb_table[smallest_comb_index] = (sorted_prime_index + 1, new_product)
-        else:  # Index out of range is handled in the for loop already
-            current_comb_table[smallest_comb_index] = (sorted_prime_index + 1, 0)
+        # The used ones
+        for s_index in smallest_comb_indices:
+            (sorted_prime_index, smallest_comb_product) = current_comb_table[s_index]
+            assert smallest_comb_product == sorted_primes[sorted_prime_index] * result[s_index]
+
+            if sorted_prime_index + 1 < len(sorted_primes):
+                new_product = result[s_index] * sorted_primes[sorted_prime_index + 1]
+                current_comb_table[s_index] = (sorted_prime_index + 1, new_product)
+            else:  # Index out of range is handled in the for loop already
+                current_comb_table[s_index] = (sorted_prime_index + 1, 0)
 
         # The new one
         new_product = result[current_result_position] * sorted_primes[0]

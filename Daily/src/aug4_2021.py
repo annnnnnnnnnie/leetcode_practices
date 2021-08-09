@@ -5,6 +5,8 @@ from itertools import dropwhile
 from typing import List
 
 
+# No 611
+
 # combination: [x,y,z]
 def is_triangle(combination):
     x, y, z = sorted(combination)

@@ -1,6 +1,8 @@
 from typing import List
 
 
+# No 581
+
 def find_mono_increasing(nums):
     # pre: len(nums) > 0
     i = 0

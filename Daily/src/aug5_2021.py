@@ -1,5 +1,6 @@
 from typing import List
 
+# No 802
 
 def eventual_safe_nodes(graph):
     return []

@@ -2,6 +2,8 @@ import math
 from typing import List
 
 
+# No 313
+
 # List_A : sorted primes
 # List_B : super ugly sequence
 def generate_super_ugly_sequence(n, sorted_primes):

@@ -39,3 +39,11 @@ class TestOverall(unittest.TestCase):
         result = self.test_subject(n, primes)
         answer = 32
         self.assertEqual(answer, result)
+
+    def test_large_case(self):
+        n = 10000
+        primes = [7, 19, 29, 37, 41, 47, 53, 59, 61, 79, 83, 89, 101, 103, 109, 127, 131, 137, 139, 157, 167, 179, 181,
+                  199, 211,
+                  229, 233, 239, 241, 251]
+        result = self.test_subject(n, primes)
+        print(result)

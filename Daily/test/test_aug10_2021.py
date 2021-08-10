@@ -25,3 +25,8 @@ class TestOverall(unittest.TestCase):
         result = self.test_subject(nums)
         answer = sum([i for i in range(n - 1)])
         self.assertEqual(answer, result)
+
+
+class TestSampleSolution(TestOverall):
+    def setUp(self) -> None:
+        self.test_subject = aug10_2021.number_of_arithmetic_slices_fast

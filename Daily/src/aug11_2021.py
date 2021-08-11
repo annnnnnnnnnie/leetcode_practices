@@ -21,10 +21,8 @@ def number_of_arithmetic_slices(nums):
 
     total_number_of_slices = 0
     for (fst, d) in arithmetic_slices_table:
-        n_ss = len(arithmetic_slices_table[(fst, d)])
-        if d == 0:
-            total_number_of_slices += number_of_slices_in_all_same_seq_with_length(n_ss)
-        else:
+        for sl in arithmetic_slices_table[(fst, d)]:
+            n_ss = len(sl)
             total_number_of_slices += number_of_possible_slices_in_seq_with_length(n_ss)
     return total_number_of_slices
 
@@ -40,12 +38,12 @@ def number_of_possible_slices_in_seq_with_length(n_ss):
     return sum([n_ss - i + 1 for i in range(3, n_ss + 1)])
 
 
-# returns True if and only if (_, d) is the key and first is in the value
+# returns True if and only if (_, d) is the key and first is in any of the value
 def already_considered(first, d, arithmetic_slices_table):
-    ss = [arithmetic_slices_table[(fst, dist)] for (fst, dist) in arithmetic_slices_table if d == dist]
-    if ss:
-        potential_matches = reduce(lambda l1, l2: l1 + l2, ss)
-        return first in potential_matches
+    sss = [slices for ((_, dist), slices) in arithmetic_slices_table.items() if d == dist]
+    if sss:
+        ss = reduce(lambda l1, l2: l1 + l2, sss)
+        return any(first in s for s in ss)
     else:
         return False
 
@@ -64,15 +62,16 @@ def find_all_long_slices(nums):
                 continue
 
             # Find the longest possible slice whose first two terms are num[first] and num[second]
-            current_slice = find_longest_slice(distance_matrix, first, second)
+            current_slices = find_longest_slices(distance_matrix, first, second)
 
             # Record that in the arithmetic_slices_table
-            if len(current_slice) > 2:
-                arithmetic_slices_table[(first, d)] = current_slice
+            current_slices = list(filter(lambda s: len(s) > 2, current_slices))
+            if current_slices:
+                arithmetic_slices_table[(first, d)] = current_slices
     return arithmetic_slices_table
 
 
-def find_longest_slice(distance_matrix, first, second):
+def find_longest_slices(distance_matrix, first, second):
     d = distance_matrix[first][second]
     current_slice = [first, second]
     current_index = second
@@ -84,7 +83,7 @@ def find_longest_slice(distance_matrix, first, second):
         next_index = distance_matrix[current_index].index(d, current_index + 1)
         current_slice.append(next_index)
         current_index = next_index
-    return current_slice
+    return [current_slice]
 
 
 class Solution:

@@ -50,9 +50,9 @@ class TestForwardDistanceMatrixGeneration(unittest.TestCase):
         self.assertEqual(2, result[2][4])
 
 
-class TestFindLongestSlice(unittest.TestCase):
+class TestFindLongestSlices(unittest.TestCase):
     def setUp(self) -> None:
-        self.slice_finder = aug11_2021.find_longest_slice
+        self.slices_finder = aug11_2021.find_longest_slices
         self.generator = aug11_2021.generate_forward_distance_matrix
 
     def test_simple_case_1(self):
@@ -60,8 +60,8 @@ class TestFindLongestSlice(unittest.TestCase):
         distance_matrix = [[0, 2, 4, 5, 6], [0, 0, 2, 3, 4], [0, 0, 0, 1, 2], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]
         first = 0
         second = 1
-        result = self.slice_finder(distance_matrix, first, second)
-        answer = [0, 1, 2, 4]
+        result = self.slices_finder(distance_matrix, first, second)
+        answer = [[0, 1, 2, 4]]
         self.assertListEqual(answer, result)
 
     def test_simple_case_2(self):
@@ -69,8 +69,8 @@ class TestFindLongestSlice(unittest.TestCase):
         distance_matrix = [[0, 2, 4, 5, 6], [0, 0, 2, 3, 4], [0, 0, 0, 1, 2], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]
         first = 2
         second = 3
-        result = self.slice_finder(distance_matrix, first, second)
-        answer = [2, 3, 4]
+        result = self.slices_finder(distance_matrix, first, second)
+        answer = [[2, 3, 4]]
         self.assertListEqual(answer, result)
 
     def test_use_generator_case_3(self):
@@ -78,8 +78,8 @@ class TestFindLongestSlice(unittest.TestCase):
         distance_matrix = self.generator(nums)
         first = 3
         second = 4
-        result = self.slice_finder(distance_matrix, first, second)
-        answer = [3, 4, 5, 6]
+        result = self.slices_finder(distance_matrix, first, second)
+        answer = [[3, 4, 5, 6]]
         self.assertListEqual(answer, result)
 
 
@@ -91,26 +91,38 @@ class TestFindAllLongSlices(unittest.TestCase):
     def test_simple_case_1(self):
         nums = [2, 4, 6, 7, 8]
         result = self.find_all_long_slices(nums)
-        answer = {(0, 2): [0, 1, 2, 4], (2, 1): [2, 3, 4]}
+        answer = {(0, 2): [[0, 1, 2, 4]], (2, 1): [[2, 3, 4]]}
         self.assertDictEqual(answer, result)
         pass
 
     def test_simple_case_2(self):
         nums = [2, 4, 6, 8, 10]
         result = self.find_all_long_slices(nums)
-        answer = {(0, 2): [0, 1, 2, 3, 4], (0, 4): [0, 2, 4]}
+        answer = {(0, 2): [[0, 1, 2, 3, 4]], (0, 4): [[0, 2, 4]]}
         self.assertDictEqual(answer, result)
         pass
 
     def test_simple_case_3(self):
         nums = [7, 7, 7, 7, 7]
         result = self.find_all_long_slices(nums)
-        answer = {(0, 0): [0, 1, 2, 3, 4]}
+        answer = {(0, 0): [[0, 1, 2, 3, 4]]}
         self.assertDictEqual(answer, result)
         pass
 
     def test_already_considered_case_1(self):
-        arithmetic_slices_table = {(0, 2): [0, 1, 2, 4], (2, 1): [2, 3, 4]}
+        arithmetic_slices_table = {(0, 2): [[0, 1, 2, 4]], (2, 1): [[2, 3, 4]]}
         first = 1
         d = 2
+        self.assertTrue(self.check_already_considered(first, d, arithmetic_slices_table))
+
+    def test_already_considered_case_2(self):
+        arithmetic_slices_table = {(0, 2): [[0, 1, 2, 4]], (2, 1): [[2, 3, 4]]}
+        first = 0
+        d = 1
+        self.assertFalse(self.check_already_considered(first, d, arithmetic_slices_table))
+
+    def test_already_considered_case_3(self):
+        arithmetic_slices_table = {(0, 2): [[0, 1, 2, 4]], (2, 1): [[2, 3, 4]]}
+        first = 2
+        d = 1
         self.assertTrue(self.check_already_considered(first, d, arithmetic_slices_table))

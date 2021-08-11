@@ -21,6 +21,11 @@ class TestOverall(unittest.TestCase):
         answer = 16
         self.perform_simple_test(nums, answer)
 
+    def test_simple_case_3(self):
+        nums = [1, 2, 3, 4, 5, 6]
+        answer = 12
+        self.perform_simple_test(nums, answer)
+
 
 class TestForwardDistanceMatrixGeneration(unittest.TestCase):
     def setUp(self) -> None:
@@ -81,6 +86,20 @@ class TestFindAllLongSlices(unittest.TestCase):
         nums = [2, 4, 6, 7, 8]
         result = self.find_all_long_slices(nums)
         answer = {(0, 2): [0, 1, 2, 4], (2, 1): [2, 3, 4]}
+        self.assertDictEqual(answer, result)
+        pass
+
+    def test_simple_case_2(self):
+        nums = [2, 4, 6, 8, 10]
+        result = self.find_all_long_slices(nums)
+        answer = {(0, 2): [0, 1, 2, 3, 4], (0, 4): [0, 2, 4]}
+        self.assertDictEqual(answer, result)
+        pass
+
+    def test_simple_case_3(self):
+        nums = [7, 7, 7, 7, 7]
+        result = self.find_all_long_slices(nums)
+        answer = {(0, 0): [0, 1, 2, 3, 4]}
         self.assertDictEqual(answer, result)
         pass
 

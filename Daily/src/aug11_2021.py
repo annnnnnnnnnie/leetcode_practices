@@ -1,4 +1,5 @@
 # No 446
+import math
 from functools import reduce
 from typing import List
 
@@ -14,26 +15,45 @@ def number_of_arithmetic_slices(nums):
     if len(nums) <= 2:
         return 0
 
+    # key: (start, d)
+    # value: the index of elements of this slice
     arithmetic_slices_table = find_all_long_slices(nums)
 
-    print(arithmetic_slices_table)
-    return 0
+    total_number_of_slices = 0
+    for (fst, d) in arithmetic_slices_table:
+        n_ss = len(arithmetic_slices_table[(fst, d)])
+        if d == 0:
+            total_number_of_slices += number_of_slices_in_all_same_seq_with_length(n_ss)
+        else:
+            total_number_of_slices += number_of_possible_slices_in_seq_with_length(n_ss)
+    return total_number_of_slices
+
+
+def number_of_slices_in_all_same_seq_with_length(n_ss):
+    n = 0
+    for i in range(3, n_ss + 1):
+        n += math.comb(n_ss, i)
+    return n
+
+
+def number_of_possible_slices_in_seq_with_length(n_ss):
+    return sum([n_ss - i + 1 for i in range(3, n_ss + 1)])
 
 
 # returns True if and only if (_, d) is the key and first is in the value
 def already_considered(first, d, arithmetic_slices_table):
     ss = [arithmetic_slices_table[(fst, dist)] for (fst, dist) in arithmetic_slices_table if d == dist]
     if ss:
-        potential_matches = reduce(list.append, ss)
+        potential_matches = reduce(lambda l1, l2: l1 + l2, ss)
         return first in potential_matches
     else:
         return False
 
 
+# key: (start, d)
+# value: the index of elements of this slice
 def find_all_long_slices(nums):
     distance_matrix = generate_forward_distance_matrix(nums)
-    # key: (start, d)
-    # value: the index of elements of this slice
     arithmetic_slices_table = {}
     for first in range(len(nums)):
         for second in range(first + 1, len(nums)):

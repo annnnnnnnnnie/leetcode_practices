@@ -77,6 +77,8 @@ def find_longest_slice(distance_matrix, first, second):
     current_slice = [first, second]
     current_index = second
 
+    # Should use a dfs to search
+
     # only [current_index + 1:] part is valid
     while d in distance_matrix[current_index][current_index + 1:]:
         next_index = distance_matrix[current_index].index(d, current_index + 1)

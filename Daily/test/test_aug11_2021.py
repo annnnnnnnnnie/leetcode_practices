@@ -26,6 +26,12 @@ class TestOverall(unittest.TestCase):
         answer = 12
         self.perform_simple_test(nums, answer)
 
+    def test_simple_case_4(self):
+        nums = [0, 1, 2, 2, 2]
+        # [0,1,2] [0,1,2] [0,1,2] (using different '2's) and [2,2,2]
+        answer = 4
+        self.perform_simple_test(nums, answer)
+
 
 class TestForwardDistanceMatrixGeneration(unittest.TestCase):
     def setUp(self) -> None:

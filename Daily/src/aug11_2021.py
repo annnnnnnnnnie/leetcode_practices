@@ -61,8 +61,8 @@ def find_all_long_slices(nums):
             d = distance_matrix[first][second]
 
             # This means that we have already considered the slice with d that contains this point
-            if already_considered(first, d, arithmetic_slices_table):
-                continue
+            # if already_considered(first, d, arithmetic_slices_table):
+            #     continue
 
             # Find the longest possible slice whose first two terms are num[first] and num[second]
             current_slices = find_longest_slices(distance_matrix, first, second)
@@ -71,22 +71,19 @@ def find_all_long_slices(nums):
             current_slices = list(filter(lambda s: len(s) > 2, current_slices))
             if current_slices:
                 arithmetic_slices_table[(first, d)] = current_slices
+
+            # if d == 0: break
     return arithmetic_slices_table
 
 
 def find_longest_slices(distance_matrix, first, second):
     d = distance_matrix[first][second]
 
-    current_slice = [first, second]
+    current_node_index = second
 
-    current_index = second
-
-    # only [current_index + 1:] part is valid
-    while d in distance_matrix[current_index]:
-        next_index = distance_matrix[current_index].index(d)
-        current_slice.append(next_index)
-        current_index = next_index
-    return [current_slice]
+    potential_tails = dfs_to_find_longest_slices(current_node_index, distance_matrix, d)
+    result = list(map(lambda xs: [first] + xs, potential_tails))
+    return result
 
 
 # returns [[ , , ], [ , , ], [ , , ], [a long slice with d starting at node] ...]
@@ -94,9 +91,13 @@ def dfs_to_find_longest_slices(node_index, distance_matrix, d):
     next_nodes = [idx for (idx, dist) in enumerate(distance_matrix[node_index]) if dist == d]
     potential_tails = []
     for next_node in next_nodes:
-        potential_tails.append(dfs_to_find_longest_slices(next_node, distance_matrix, d))
+        potential_tails_for_this_node = dfs_to_find_longest_slices(next_node, distance_matrix, d)
+        potential_tails.extend(potential_tails_for_this_node)
 
-    result = map(lambda xs: [node_index] + xs, potential_tails)
+    if potential_tails:
+        result = list(map(lambda xs: [node_index] + xs, potential_tails))
+    else:
+        result = [[node_index]]
     return result
 
 

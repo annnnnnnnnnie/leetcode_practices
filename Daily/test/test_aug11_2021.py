@@ -81,7 +81,7 @@ class TestFindLongestSlices(unittest.TestCase):
         first = 3
         second = 4
         result = self.slices_finder(distance_matrix, first, second)
-        answer = [[3, 4, 5, 6]]
+        answer = [[3, 4, 5, 6], [3, 4, 6]]
         self.assertListEqual(answer, result)
 
 
@@ -93,14 +93,14 @@ class TestFindAllLongSlices(unittest.TestCase):
     def test_simple_case_1(self):
         nums = [2, 4, 6, 7, 8]
         result = self.find_all_long_slices(nums)
-        answer = {(0, 2): [[0, 1, 2, 4]], (2, 1): [[2, 3, 4]]}
+        answer = {(0, 2): [[0, 1, 2, 4]], (1, 2): [[1, 2, 4]], (2, 1): [[2, 3, 4]]}
         self.assertDictEqual(answer, result)
         pass
 
     def test_simple_case_2(self):
         nums = [2, 4, 6, 8, 10]
         result = self.find_all_long_slices(nums)
-        answer = {(0, 2): [[0, 1, 2, 3, 4]], (0, 4): [[0, 2, 4]]}
+        answer = {(0, 2): [[0, 1, 2, 3, 4]], (0, 4): [[0, 2, 4]], (1, 2): [[1, 2, 3, 4]], (2, 2): [[2, 3, 4]]}
         self.assertDictEqual(answer, result)
         pass
 
@@ -110,6 +110,11 @@ class TestFindAllLongSlices(unittest.TestCase):
         answer = {(0, 0): [[0, 1, 2, 3, 4]]}
         self.assertDictEqual(answer, result)
         pass
+
+
+class TestAlreadyConsidered(unittest.TestCase):
+    def setUp(self) -> None:
+        self.check_already_considered = aug11_2021.already_considered
 
     def test_already_considered_case_1(self):
         arithmetic_slices_table = {(0, 2): [[0, 1, 2, 4]], (2, 1): [[2, 3, 4]]}
@@ -128,3 +133,27 @@ class TestFindAllLongSlices(unittest.TestCase):
         first = 2
         d = 1
         self.assertTrue(self.check_already_considered(first, d, arithmetic_slices_table))
+
+
+class TestDFS(unittest.TestCase):
+    def setUp(self) -> None:
+        self.dfs = aug11_2021.dfs_to_find_longest_slices
+        self.dist_matrix_generator = aug11_2021.generate_forward_distance_matrix
+
+    def test_simple_case_1(self):
+        nums = [0, 1, 1, 1, 2]
+        distance_matrix = self.dist_matrix_generator(nums)
+        start = 0
+        d = 1
+        result = self.dfs(start, distance_matrix, d)
+        answer = [[0, 1, 4], [0, 2, 4], [0, 3, 4]]
+        self.assertListEqual(answer, result)
+
+    def test_simple_case_2(self):
+        nums = [7, 7, 7, 7]
+        distance_matrix = self.dist_matrix_generator(nums)
+        start = 0
+        d = 0
+        result = self.dfs(start, distance_matrix, d)
+        answer = [[0, 1, 2, 3], [0, 1, 3], [0, 2, 3], [0, 3]]
+        self.assertListEqual(answer, result)

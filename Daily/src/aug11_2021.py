@@ -62,7 +62,7 @@ def find_all_long_slices(nums):
             d = distance_matrix[first][second]
 
             if d == 0 and already_considered(first, d, arithmetic_slices_table):
-                continue
+                break
 
             # Find the longest possible slice whose first two terms are num[first] and num[second]
             current_slices = find_longest_slices(distance_matrix, first, second)

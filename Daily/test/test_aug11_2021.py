@@ -1,3 +1,4 @@
+import math
 import unittest
 
 from Daily.src import aug11_2021
@@ -30,6 +31,12 @@ class TestOverall(unittest.TestCase):
         nums = [0, 1, 2, 2, 2]
         # [0,1,2] [0,1,2] [0,1,2] (using different '2's) and [2,2,2]
         answer = 4
+        self.perform_simple_test(nums, answer)
+
+    def test_long_case_1(self):
+        nums = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        n_ss = len(nums)
+        answer = sum(math.comb(n_ss, i) for i in range(3, n_ss + 1))
         self.perform_simple_test(nums, answer)
 
 

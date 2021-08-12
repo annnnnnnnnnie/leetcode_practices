@@ -40,7 +40,7 @@ class TestForwardDistanceMatrixGeneration(unittest.TestCase):
     def test_simple_case_1(self):
         nums = [2, 4, 6, 7, 8]
         result = self.generator(nums)
-        answer = [[0, 2, 4, 5, 6], [0, 0, 2, 3, 4], [0, 0, 0, 1, 2], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]
+        answer = [[-1, 2, 4, 5, 6], [-1, -1, 2, 3, 4], [-1, -1, -1, 1, 2], [-1, -1, -1, -1, 1], [-1, -1, -1, -1, -1]]
         self.assertListEqual(answer, result)
 
     def test_can_use_generated_matrix(self):
@@ -56,8 +56,9 @@ class TestFindLongestSlices(unittest.TestCase):
         self.generator = aug11_2021.generate_forward_distance_matrix
 
     def test_simple_case_1(self):
-        nums = [2, 4, 6, 7, 8]
-        distance_matrix = [[0, 2, 4, 5, 6], [0, 0, 2, 3, 4], [0, 0, 0, 1, 2], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]
+        # nums = [2, 4, 6, 7, 8]
+        distance_matrix = [[-1, 2, 4, 5, 6], [-1, -1, 2, 3, 4], [-1, -1, -1, 1, 2], [-1, -1, -1, -1, 1],
+                           [-1, -1, -1, -1, -1]]
         first = 0
         second = 1
         result = self.slices_finder(distance_matrix, first, second)
@@ -65,8 +66,9 @@ class TestFindLongestSlices(unittest.TestCase):
         self.assertListEqual(answer, result)
 
     def test_simple_case_2(self):
-        nums = [2, 4, 6, 7, 8]
-        distance_matrix = [[0, 2, 4, 5, 6], [0, 0, 2, 3, 4], [0, 0, 0, 1, 2], [0, 0, 0, 0, 1], [0, 0, 0, 0, 0]]
+        # nums = [2, 4, 6, 7, 8]
+        distance_matrix = [[-1, 2, 4, 5, 6], [-1, -1, 2, 3, 4], [-1, -1, -1, 1, 2], [-1, -1, -1, -1, 1],
+                           [-1, -1, -1, -1, -1]]
         first = 2
         second = 3
         result = self.slices_finder(distance_matrix, first, second)

@@ -1,5 +1,7 @@
 # No 446
+import itertools
 import math
+import operator
 from functools import reduce
 from typing import List
 
@@ -7,7 +9,8 @@ from typing import List
 # distance_matrix[i][j] will contain nums[j] - nums[i]
 # j > i
 def generate_forward_distance_matrix(nums):
-    result = [[nums[j] - nums[i] if j > i else 0 for j in range(len(nums))] for i in range(len(nums))]
+    # Initialize to -1 such that d == 0 will not match the invalid parts of the matrix
+    result = [[nums[j] - nums[i] if j > i else -1 for j in range(len(nums))] for i in range(len(nums))]
     return result
 
 
@@ -42,7 +45,7 @@ def number_of_possible_slices_in_seq_with_length(n_ss):
 def already_considered(first, d, arithmetic_slices_table):
     sss = [slices for ((_, dist), slices) in arithmetic_slices_table.items() if d == dist]
     if sss:
-        ss = reduce(lambda l1, l2: l1 + l2, sss)
+        ss = reduce(operator.add, sss)
         return any(first in s for s in ss)
     else:
         return False
@@ -73,17 +76,28 @@ def find_all_long_slices(nums):
 
 def find_longest_slices(distance_matrix, first, second):
     d = distance_matrix[first][second]
+
     current_slice = [first, second]
+
     current_index = second
 
-    # Should use a dfs to search
-
     # only [current_index + 1:] part is valid
-    while d in distance_matrix[current_index][current_index + 1:]:
-        next_index = distance_matrix[current_index].index(d, current_index + 1)
+    while d in distance_matrix[current_index]:
+        next_index = distance_matrix[current_index].index(d)
         current_slice.append(next_index)
         current_index = next_index
     return [current_slice]
+
+
+# returns [[ , , ], [ , , ], [ , , ], [a long slice with d starting at node] ...]
+def dfs_to_find_longest_slices(node_index, distance_matrix, d):
+    next_nodes = [idx for (idx, dist) in enumerate(distance_matrix[node_index]) if dist == d]
+    potential_tails = []
+    for next_node in next_nodes:
+        potential_tails.append(dfs_to_find_longest_slices(next_node, distance_matrix, d))
+
+    result = map(lambda xs: [node_index] + xs, potential_tails)
+    return result
 
 
 class Solution:

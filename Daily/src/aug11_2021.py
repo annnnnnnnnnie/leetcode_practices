@@ -87,12 +87,13 @@ def dfs_to_find_longest_slices(node_index, distance_matrix, d):
         potential_tails_for_this_node = dfs_to_find_longest_slices(next_node, distance_matrix, d)
         potential_tails.extend(potential_tails_for_this_node)
 
+    # The [[]] is for early termination
     if potential_tails:
-        result = list(map(lambda xs: [node_index] + xs, potential_tails)) + [[]]  # if anyone wishes to early terminate
+        result = list(map(lambda xs: [node_index] + xs, potential_tails)) + [[]]
     else:
         result = [[node_index]] + [[]]
     return result
-
+[[0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 3], [0, 1, 3], [0, 1, 4], [0, 1, 5], [0, 2, 3], [0, 2, 3], [0, 2, 4], [0, 2, 5], [0, 3, 4], [0, 3, 5], [0, 4, 5], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 4], [0, 1, 2, 5], [0, 1, 3, 4], [0, 1, 3, 5], [0, 1, 4, 5], [0, 2, 3, 4], [0, 2, 3, 5], [0, 2, 4, 5], [0, 3, 4, 5], [0, 1, 2, 3, 4], [0, 1, 2, 3, 5], [0, 1, 2, 4, 5], [0, 1, 3, 4, 5], [0, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]
 
 class Solution:
     def numberOfArithmeticSlices(self, nums: List[int]) -> int:

@@ -157,3 +157,26 @@ class TestDFS(unittest.TestCase):
         result = list(filter(lambda xs: len(xs) > 2, self.dfs(start, distance_matrix, d)))
         answer = [[0, 1, 2, 3], [0, 1, 2], [0, 1, 3], [0, 2, 3]]
         self.assertListEqual(answer, result)
+
+    def test_simple_case_3(self):
+        nums = [7, 7, 7, 7, 7]
+        distance_matrix = self.dist_matrix_generator(nums)
+        start = 0
+        d = 0
+        result = list(filter(lambda xs: len(xs) > 2, self.dfs(start, distance_matrix, d)))
+        answer = [[0, 1, 2, 3, 4], [0, 1, 2, 3], [0, 1, 2], [0, 1, 2, 4], [0, 1, 2], [0, 1, 3, 4], [0, 1, 3], [0, 1, 4],
+                  [0, 2, 3, 4], [0, 2, 3], [0, 2, 4], [0, 3, 4]]
+        self.assertListEqual(answer, result)
+
+    def test_simple_case_4(self):
+        nums = [7, 7, 7, 7, 7, 7]
+        distance_matrix = self.dist_matrix_generator(nums)
+        start = 0
+        d = 0
+        result = list(filter(lambda xs: len(xs) > 2, self.dfs(start, distance_matrix, d)))
+        answer = [[0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4], [0, 1, 2, 3], [0, 1, 2, 3, 5], [0, 1, 2, 3], [0, 1, 2],
+                  [0, 1, 2, 4, 5], [0, 1, 2, 4], [0, 1, 2], [0, 1, 2, 5], [0, 1, 2], [0, 1, 3, 4, 5], [0, 1, 3, 4],
+                  [0, 1, 3], [0, 1, 3, 5], [0, 1, 3], [0, 1, 4, 5], [0, 1, 4], [0, 1, 5], [0, 2, 3, 4, 5], [0, 2, 3, 4],
+                  [0, 2, 3], [0, 2, 3, 5], [0, 2, 3], [0, 2, 4, 5], [0, 2, 4], [0, 2, 5], [0, 3, 4, 5], [0, 3, 4],
+                  [0, 3, 5], [0, 4, 5]]
+        self.assertListEqual(answer, result)

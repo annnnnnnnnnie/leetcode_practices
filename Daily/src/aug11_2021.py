@@ -1,5 +1,4 @@
 # No 446
-import itertools
 import math
 import operator
 from functools import reduce
@@ -23,8 +22,12 @@ def number_of_arithmetic_slices(nums):
     arithmetic_slices_table = find_all_long_slices(nums)
 
     total_number_of_slices = 0
-    for ((_, _), sls) in arithmetic_slices_table.items():
-        total_number_of_slices += len(sls)
+    for ((_, d), sls) in arithmetic_slices_table.items():
+        if d == 0:
+            n_ss = len(sls[0])
+            total_number_of_slices += number_of_slices_in_all_same_seq_with_length(n_ss)
+        else:
+            total_number_of_slices += len(sls)
     return total_number_of_slices
 
 
@@ -58,14 +61,22 @@ def find_all_long_slices(nums):
         for second in range(first + 1, len(nums)):
             d = distance_matrix[first][second]
 
+            if d == 0 and already_considered(first, d, arithmetic_slices_table):
+                continue
+
             # Find the longest possible slice whose first two terms are num[first] and num[second]
             current_slices = find_longest_slices(distance_matrix, first, second)
 
             # Record that in the arithmetic_slices_table
             current_slices = list(filter(lambda s: len(s) > 2, current_slices))
+
             if current_slices:
-                arithmetic_slices_table[(first, d)] = \
-                    arithmetic_slices_table.setdefault((first, d), []) + current_slices
+                if d == 0:
+                    arithmetic_slices_table[(first, d)] = [current_slices[0]]
+                    break
+                else:
+                    arithmetic_slices_table[(first, d)] = \
+                        arithmetic_slices_table.setdefault((first, d), []) + current_slices
     return arithmetic_slices_table
 
 
@@ -93,7 +104,7 @@ def dfs_to_find_longest_slices(node_index, distance_matrix, d):
     else:
         result = [[node_index]] + [[]]
     return result
-[[0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 3], [0, 1, 3], [0, 1, 4], [0, 1, 5], [0, 2, 3], [0, 2, 3], [0, 2, 4], [0, 2, 5], [0, 3, 4], [0, 3, 5], [0, 4, 5], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 4], [0, 1, 2, 5], [0, 1, 3, 4], [0, 1, 3, 5], [0, 1, 4, 5], [0, 2, 3, 4], [0, 2, 3, 5], [0, 2, 4, 5], [0, 3, 4, 5], [0, 1, 2, 3, 4], [0, 1, 2, 3, 5], [0, 1, 2, 4, 5], [0, 1, 3, 4, 5], [0, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]
+
 
 class Solution:
     def numberOfArithmeticSlices(self, nums: List[int]) -> int:

@@ -62,7 +62,7 @@ class TestFindLongestSlices(unittest.TestCase):
         first = 0
         second = 1
         result = self.slices_finder(distance_matrix, first, second)
-        answer = [[0, 1, 2, 4]]
+        answer = [[0, 1, 2, 4], [0, 1, 2], [0, 1], [0]]
         self.assertListEqual(answer, result)
 
     def test_simple_case_2(self):
@@ -72,7 +72,7 @@ class TestFindLongestSlices(unittest.TestCase):
         first = 2
         second = 3
         result = self.slices_finder(distance_matrix, first, second)
-        answer = [[2, 3, 4]]
+        answer = [[2, 3, 4], [2, 3], [2]]
         self.assertListEqual(answer, result)
 
     def test_use_generator_case_3(self):
@@ -81,7 +81,7 @@ class TestFindLongestSlices(unittest.TestCase):
         first = 3
         second = 4
         result = self.slices_finder(distance_matrix, first, second)
-        answer = [[3, 4, 5, 6], [3, 4, 6]]
+        answer = [[3, 4, 5, 6], [3, 4, 5], [3, 4], [3, 4, 6], [3, 4], [3]]
         self.assertListEqual(answer, result)
 
 
@@ -93,22 +93,22 @@ class TestFindAllLongSlices(unittest.TestCase):
     def test_simple_case_1(self):
         nums = [2, 4, 6, 7, 8]
         result = self.find_all_long_slices(nums)
-        answer = {(0, 2): [[0, 1, 2, 4]], (1, 2): [[1, 2, 4]], (2, 1): [[2, 3, 4]]}
+        answer = {(0, 2): [[0, 1, 2, 4], [0, 1, 2]], (1, 2): [[1, 2, 4]], (2, 1): [[2, 3, 4]]}
         self.assertDictEqual(answer, result)
         pass
 
     def test_simple_case_2(self):
         nums = [2, 4, 6, 8, 10]
         result = self.find_all_long_slices(nums)
-        answer = {(0, 2): [[0, 1, 2, 3, 4]], (0, 4): [[0, 2, 4]], (1, 2): [[1, 2, 3, 4]], (2, 2): [[2, 3, 4]]}
-        self.assertDictEqual(answer, result)
+        answer_0_2 = [[0, 1, 2, 3, 4], [0, 1, 2, 3], [0, 1, 2]]
+        self.assertListEqual(answer_0_2, result[(0, 2)])
         pass
 
     def test_simple_case_3(self):
-        nums = [7, 7, 7, 7, 7]
+        nums = [7, 7, 7, 7]
         result = self.find_all_long_slices(nums)
-        answer = {(0, 0): [[0, 1, 2, 3, 4]]}
-        self.assertDictEqual(answer, result)
+        answer_0_0 = [[0, 1, 2, 3], [0, 1, 2], [0, 1, 3], [0, 2, 3]]
+        self.assertListEqual(answer_0_0, result[(0, 0)])
         pass
 
 
@@ -145,7 +145,7 @@ class TestDFS(unittest.TestCase):
         distance_matrix = self.dist_matrix_generator(nums)
         start = 0
         d = 1
-        result = self.dfs(start, distance_matrix, d)
+        result = list(filter(lambda xs: len(xs) > 2, self.dfs(start, distance_matrix, d)))
         answer = [[0, 1, 4], [0, 2, 4], [0, 3, 4]]
         self.assertListEqual(answer, result)
 
@@ -154,6 +154,6 @@ class TestDFS(unittest.TestCase):
         distance_matrix = self.dist_matrix_generator(nums)
         start = 0
         d = 0
-        result = self.dfs(start, distance_matrix, d)
-        answer = [[0, 1, 2, 3], [0, 1, 3], [0, 2, 3], [0, 3]]
+        result = list(filter(lambda xs: len(xs) > 2, self.dfs(start, distance_matrix, d)))
+        answer = [[0, 1, 2, 3], [0, 1, 2], [0, 1, 3], [0, 2, 3]]
         self.assertListEqual(answer, result)

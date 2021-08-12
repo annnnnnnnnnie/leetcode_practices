@@ -23,10 +23,8 @@ def number_of_arithmetic_slices(nums):
     arithmetic_slices_table = find_all_long_slices(nums)
 
     total_number_of_slices = 0
-    for (fst, d) in arithmetic_slices_table:
-        for sl in arithmetic_slices_table[(fst, d)]:
-            n_ss = len(sl)
-            total_number_of_slices += number_of_possible_slices_in_seq_with_length(n_ss)
+    for ((_, _), sls) in arithmetic_slices_table.items():
+        total_number_of_slices += len(sls)
     return total_number_of_slices
 
 
@@ -38,7 +36,7 @@ def number_of_slices_in_all_same_seq_with_length(n_ss):
 
 
 def number_of_possible_slices_in_seq_with_length(n_ss):
-    return sum([n_ss - i + 1 for i in range(3, n_ss + 1)])
+    return n_ss - 2
 
 
 # returns True if and only if (_, d) is the key and first is in any of the value
@@ -52,7 +50,7 @@ def already_considered(first, d, arithmetic_slices_table):
 
 
 # key: (start, d)
-# value: the index of elements of this slice
+# value: the list of (indices of elements of one slice)
 def find_all_long_slices(nums):
     distance_matrix = generate_forward_distance_matrix(nums)
     arithmetic_slices_table = {}
@@ -60,19 +58,14 @@ def find_all_long_slices(nums):
         for second in range(first + 1, len(nums)):
             d = distance_matrix[first][second]
 
-            # This means that we have already considered the slice with d that contains this point
-            # if already_considered(first, d, arithmetic_slices_table):
-            #     continue
-
             # Find the longest possible slice whose first two terms are num[first] and num[second]
             current_slices = find_longest_slices(distance_matrix, first, second)
 
             # Record that in the arithmetic_slices_table
             current_slices = list(filter(lambda s: len(s) > 2, current_slices))
             if current_slices:
-                arithmetic_slices_table[(first, d)] = current_slices
-
-            # if d == 0: break
+                arithmetic_slices_table[(first, d)] = \
+                    arithmetic_slices_table.setdefault((first, d), []) + current_slices
     return arithmetic_slices_table
 
 
@@ -95,9 +88,9 @@ def dfs_to_find_longest_slices(node_index, distance_matrix, d):
         potential_tails.extend(potential_tails_for_this_node)
 
     if potential_tails:
-        result = list(map(lambda xs: [node_index] + xs, potential_tails))
+        result = list(map(lambda xs: [node_index] + xs, potential_tails)) + [[]]  # if anyone wishes to early terminate
     else:
-        result = [[node_index]]
+        result = [[node_index]] + [[]]
     return result
 
 

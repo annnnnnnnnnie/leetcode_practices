@@ -64,20 +64,37 @@ def find_all_long_slices(nums):
             if d == 0 and already_considered(first, d, arithmetic_slices_table):
                 break
 
-            # Find the longest possible slice whose first two terms are num[first] and num[second]
-            current_slices = find_longest_slices(distance_matrix, first, second)
+            if d == 0:
+                all_same_slice = find_all_same_slice(distance_matrix, first, second)
+                if len(all_same_slice) > 2:
+                    arithmetic_slices_table[(first, d)] = [all_same_slice]
+            else:
+                # Find the longest possible slice whose first two terms are num[first] and num[second]
+                current_slices = find_longest_slices(distance_matrix, first, second)
 
-            # Record that in the arithmetic_slices_table
-            current_slices = list(filter(lambda s: len(s) > 2, current_slices))
+                # Record that in the arithmetic_slices_table
+                current_slices = list(filter(lambda s: len(s) > 2, current_slices))
 
-            if current_slices:
-                if d == 0:
-                    arithmetic_slices_table[(first, d)] = [current_slices[0]]
-                    break
-                else:
+                if current_slices:
                     arithmetic_slices_table[(first, d)] = \
                         arithmetic_slices_table.setdefault((first, d), []) + current_slices
+
     return arithmetic_slices_table
+
+
+def find_all_same_slice(distance_matrix, first, second):
+    d = distance_matrix[first][second]
+    all_same_slice = [first, second]
+    current_index = second
+
+    # Should use a dfs to search
+
+    # only [current_index + 1:] part is valid
+    while d in distance_matrix[current_index]:
+        next_index = distance_matrix[current_index].index(d)
+        all_same_slice.append(next_index)
+        current_index = next_index
+    return all_same_slice
 
 
 def find_longest_slices(distance_matrix, first, second):

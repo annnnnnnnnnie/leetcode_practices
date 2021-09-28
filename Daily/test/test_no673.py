@@ -85,6 +85,8 @@ class MyTestCase(unittest.TestCase):
                                 -111, -150, -160, -163, -187, -176, -185, -188, -170, -160, -157, 19, -104, -135, -151,
                                 -177, -124, -110, -143, -139, -182, -187, -131, -134, -140, -169, -148, -181, -157,
                                 -108, 20, -129, -109, -139, 20]
+        self.long_ascending_nums = [i for i in range(1000)]
+        self.long_zig_nums = [i for i in range(20, 0, -1)] * 5 + [i for i in range(50)]
 
         self.lis_number_finder = no673.find_number_of_lis
 
@@ -105,7 +107,13 @@ class MyTestCase(unittest.TestCase):
         result = self.lis_number_finder(nums)
 
     def test_long_ascending(self):
-        nums = [i for i in range(1000)]
+        nums = self.long_ascending_nums
+        result = self.lis_number_finder(nums)
+        answer = 1
+        self.assertEqual(answer, result)
+
+    def test_long_zig(self):
+        nums = self.long_zig_nums
         result = self.lis_number_finder(nums)
         answer = 1
         self.assertEqual(answer, result)

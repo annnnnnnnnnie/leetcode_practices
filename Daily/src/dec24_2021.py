@@ -2,6 +2,9 @@ import math
 from typing import List
 
 
+# No. 1705
+# https://leetcode-cn.com/problems/maximum-number-of-eaten-apples/
+
 def eaten_apples(apples, days):
     apple_shelf = AppleShelf(0)
     total_apple_count = 0
@@ -25,17 +28,17 @@ class AppleShelf:
     def batch_add_apple(self, apple_count, apple_fresh_for):
         """
         O(log n) insertion.
-        :param apple_count: How many apples
-        :param apple_fresh_for: Apples expire in ? days
-        :return: None
+        :param apple_count: How many apples.
+        :param apple_fresh_for: Apples expire in ? days.
+        :return: None.
         """
         apple_best_until = self.date + apple_fresh_for
         self.apples.insert(apple_best_until, apple_count)
 
     def forward_one_day(self):
         """
-        Increment date. Remove expired apples
-        :return: None
+        Increment date. Remove expired apples.
+        :return: None.
         """
         self.date += 1
         # Throw away expired apples
@@ -45,7 +48,7 @@ class AppleShelf:
     def try_get_one_apple(self):
         """
         Try to get an apple closest to expiry.
-        :return: 1 if successfully get, 0 if no apple is on the shelf
+        :return: 1 if successfully get, 0 if no apple is on the shelf.
         """
         return 0
 
@@ -70,9 +73,10 @@ def right(i):
 
 class PriorityQueue:
     """
-    Minimum heap as in CLRS (Introduction to Algorithms 3rd edition) Chapter 6
-    Min heap property: this.key = min(this.key, lt.key, rt.key)
-    Full heap property: The heap is full on all levels except for the leaves
+    Minimum heap implementation as in CLRS (Introduction to Algorithms 3rd edition) Chapter 6.
+    Alternatively, use Lib/queue.PriorityQueue or heapq.
+    Min heap property: this.key = min(this.key, lt.key, rt.key).
+    Full heap property: The heap is full on all levels except for the leaves.
     """
 
     def __init__(self):
@@ -80,7 +84,7 @@ class PriorityQueue:
 
     def heap_decrease_key(self, i, key):
         if key > self.content[i].key:
-            raise Exception("new key is larger than current key")
+            raise Exception("New key is larger than current key.")
 
         self.content[i].key = key
         while i > 0 and self.content[parent(i)].key > self.content[i].key:
@@ -95,7 +99,7 @@ class PriorityQueue:
         if self.content:
             return self.content[0]
         else:
-            raise Exception("Empty priority queue")
+            raise Exception("Empty priority queue.")
 
     def min_heapify(self, start_index):
         l = left(start_index)
@@ -116,10 +120,14 @@ class PriorityQueue:
         if self.content:
             min_element = self.content[0]
             self.content[0] = self.content[-1]
+            del self.content[-1]
             self.min_heapify(0)
             return min_element
         else:
-            raise Exception("Empty priority queue")
+            raise Exception("Empty priority queue.")
+
+    def is_empty(self):
+        return not self.content
 
 
 class Solution:

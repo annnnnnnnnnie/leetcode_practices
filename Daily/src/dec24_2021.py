@@ -16,8 +16,16 @@ def eaten_apples(apples, days):
             total_apple_count += 1
 
         apple_shelf.forward_one_day()
-        pass
-    return 0
+
+    while True:
+        apple = apple_shelf.try_get_one_apple()
+        if apple:
+            total_apple_count += 1
+            apple_shelf.forward_one_day()
+        else:
+            break
+
+    return total_apple_count
 
 
 class AppleShelf:
@@ -32,6 +40,9 @@ class AppleShelf:
         :param apple_fresh_for: Apples expire in ? days.
         :return: None.
         """
+        if apple_count == 0:
+            assert apple_fresh_for == 0
+            return
         apple_best_until = self.date + apple_fresh_for
         self.apples.insert(apple_best_until, apple_count)
 
@@ -42,15 +53,25 @@ class AppleShelf:
         """
         self.date += 1
         # Throw away expired apples
-        while self.apples.peek().key < self.date:
+        while (not self.apples.is_empty()) and self.apples.peek().key <= self.date:
             self.apples.pop()
 
     def try_get_one_apple(self):
         """
         Try to get an apple closest to expiry.
+        Removes an apple from the shelf upon success
         :return: 1 if successfully get, 0 if no apple is on the shelf.
         """
-        return 0
+        if self.apples.is_empty():
+            return 0
+        else:
+            min_element = self.apples.peek()
+            assert min_element.value >= 1
+            if min_element.value == 1:
+                self.apples.pop()
+            else:
+                min_element.value -= 1
+            return 1
 
 
 class PriorityQueueNode:

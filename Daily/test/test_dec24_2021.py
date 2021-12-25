@@ -55,5 +55,41 @@ class TestMinHeap(unittest.TestCase):
         self.assertListEqual(answer, kvs)
 
 
+class TestAppleShelf(unittest.TestCase):
+    def setUp(self) -> None:
+        self.appleShelf = Daily.src.dec24_2021.AppleShelf
+        self.apple_shelf = self.appleShelf(0)
+
+    def test_add_one_apple(self):
+        self.apple_shelf.batch_add_apple(1, 1)
+        apple = self.apple_shelf.try_get_one_apple()
+        self.assertEqual(1, apple)
+
+    def test_expire_one_apple(self):
+        self.apple_shelf.batch_add_apple(1, 1)
+        self.apple_shelf.forward_one_day()
+        apple = self.apple_shelf.try_get_one_apple()
+        self.assertEqual(0, apple)
+
+
+class TestEatApple(unittest.TestCase):
+    def setUp(self) -> None:
+        self.eaten_apples = Daily.src.dec24_2021.eaten_apples
+
+    def test_case_1(self):
+        apples = [1, 2, 3, 5, 2]
+        days = [3, 2, 1, 4, 2]
+        result = self.eaten_apples(apples, days)
+        answer = 7
+        self.assertEqual(answer, result)
+
+    def test_case_2(self):
+        apples = [3, 0, 0, 0, 0, 2]
+        days = [3, 0, 0, 0, 0, 2]
+        result = self.eaten_apples(apples, days)
+        answer = 5
+        self.assertEqual(answer, result)
+
+
 if __name__ == '__main__':
     unittest.main()
